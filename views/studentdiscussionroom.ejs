@@ -1,0 +1,242 @@
+<%- include('partials/side-nav'); -%>
+
+<div class="side-nav-content p-3">
+    <div id='dd' class="scheduled mb-3" style="justify-content: space-between;"><p></p><p></p></div>
+    <p id="email" hidden><%=currentUser.email%></p>
+    <div class="chat-cont text-right">
+        <a class="waves-effect waves-light btn modal-trigger btn-floating" href="#chat-student">      <i class="fas fa-comments"></i>
+        </a><p>Chat</p>
+      </div>
+
+    <div class="stud-row">
+        <div class="row">
+          <div class="col s12 m7">
+            <div class="card" style="width: 70%;">
+              <div class="card-title text-center p-3 blue-grey lighten-5">Discussion Room</div>
+          <h4 class="text-center" >Organized by <%=discussion.admin%></h4>
+              <div class="card-image p-3" style="height: 40vh; overflow: hidden;" >
+                <img src="/images/discuss.png" style="width: 300px;margin: auto;margin-top: 20px;" height="200">
+              </div>
+                <div class="card-content">
+                    <div style="font-size: larger;">Room Id :  <span id="room"><%=discussion.roomId%></span></div>
+                    <div style="font-size: larger;"> Time : <%=moment(discussion.scheduledTime).format('MMMM Do YYYY, h:mm:ss a')%></div>
+                    <%errors.forEach((err)=>{%>
+                        <%=err%>
+                    <%})%>
+              </div>
+              <div class="card-action text-center">
+                <a class="btn btn-primary black darken-1" href="/student/dashboard/discussion/enter/classroom?room=<%=discussion.roomId%>&email=<%=currentUser.email%>" >Enter Class</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="seperator mt-5 "></div>
+
+    <div class="container mt-5">
+      <div class="card">
+        <span class="card-content text-center">
+          <div class="card-title mt-1 " style="background: #3C35A3;height: 100px;font-size: 30px;padding: 25px 20px;color: white;font-weight: 400;"><b>Uploaded Notes </b></div>
+    
+          <div class="card card-body mb-3">
+            <table class="table table-striped;border-radius: 1em;border-radius: 25px !important" >
+              <thead>
+                <tr style="background:#6D7AE0;color:white;border-radius: 25px">
+                  <th scope="col">File Name</th>
+                  <th scope="col">Download</th>
+                 
+                </tr>
+              </thead>
+              <tbody>
+                <% t=0 %>
+              <% if(discussion.files.length!==0){ %>
+              <% discussion.files.forEach(function(file) { %>
+                <% t++ %>
+                <% if(t%2==0) { %>
+                  <tr style="background:white">
+                <%} else { %>
+                  <tr style="background:#F8F7FF">
+                <% } %>
+                <td scope="row"><%= file.filename %> </td>
+                <td><a href="/teacher/dashboard/getfile/file/<%= file.filename %>" download><button class="btn" style="background-color: #3C35A3;"><i class="fa fa-download"></i> </button></a></td>
+                
+              <% })} %>
+            </tbody>
+          </table>
+          </div>
+    <div class="seperator mt-5 "></div>
+
+    <div id="chat-student" class="T-chat modal">
+      <div class="modal-footer">
+        <h4 class="theme-heading text-center" style="margin: auto;" >Chat</h4>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat"><i class="fas fa-times red-text"></i></a>
+      </div>
+      <div class="modal-content">
+        <div style="height: 100%; margin-bottom: 0rem !important;">
+          <div id="sidebar" class="chat__sidebar"> </div>
+  
+            <div>
+                <div id="messages"> 
+                <%texts.forEach((per)=>{%>
+                    <div>
+                        <span><%=per.username%></span> <%=moment(per.createdAt).format('h:mm a')%>
+                        <p><%=per.message%></p>
+                    </div>
+                  <%})%>
+                </div>
+                <div>
+                    <form id="message-form">
+                        <input type="hidden" id="roomId" value="<%=discussion.roomId%>" name="roomId" type="text">
+                        <input type="hidden" id="username" value="<%=currentUser.name%>" name="username" type="text">
+  
+                        <input name="message" id="ip" type="text" placeholder="Message" required autocomplete="off">
+                        <button class="btn" id="but">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div id="chat-teacher" class="T-chat modal" style="border-radius: 20px;">
+  <div class="modal-footer" style="background:#3C35A3" >
+    <h4 class="theme-heading text-center" style="margin: auto;color: white;" >CHAT</h4>
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat"><i class="fas fa-times red-text"></i></a>
+  </div>
+  <div class="modal-content">
+    <div style="height: 100%;margin-bottom: 0rem !important;">
+      <div id="sidebar" class="chat__sidebar"> </div>
+
+        <div>
+            <div id="messages"> 
+            <%texts.forEach((per)=>{%>
+                <div>
+                    <span><%=per.username%></span> <span style="font-size: 12px;font-weight: 200;"><%=moment(per.createdAt).format('h:mm a')%></span>
+                    <p style="background: #EDEEF7;padding: 10px 10px;min-width: 70px;max-width: 500px;border-radius: 20px;"><%=per.message%></p>
+                </div>
+              <%})%>
+            </div>
+            <div>
+                <form id="message-form">
+                    <input type="hidden" id="roomId" value="<%=discussion.roomId%>" name="roomId" type="text">
+                    <input type="hidden" id="username" value="<%=currentUser.name%>" name="username" type="text">
+
+                    <input name="message" id="ip" type="text" placeholder="Message" required autocomplete="off">
+                    <button class="btn" id="but" style="background:#3C35A3;border-radius: 5px;">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script id="message-template" type="text/html">
+    <div>
+        <span>{{username}}</span>  {{createdAt}}
+        <br/>
+        <p>{{message}}</p>
+    </div>
+</script>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+
+<script>
+    var teacherNav = document.querySelectorAll('#student-nav');
+  teacherNav.forEach((teacherNav) => {
+    teacherNav.innerHTML = '';
+    const navLinks = `<a id="dshbrd" href="https://lit-depths-17371.herokuapp.com/student/dashboard/" 
+      ><i class="fas fa-desktop"></i><span>Dashboard</span></a
+    >
+    <a href="/student/profile/myprofile?email=<%=currentUser.email%>"><i class="fas fa-user"></i><span>My Profile</span></a>
+    <a class="modal-trigger" href="#chat-student"><i class="fas fa-comments"></i><span>Chat</span>
+    </a>
+      <a href="#upload-t"><i class="fas fa-file-alt"></i><span>Notes</span></a>
+   `;
+    teacherNav.innerHTML = navLinks;
+  });
+  document.querySelectorAll('.hme').forEach(link => link.href = location.hostname);
+    function showTime() {
+    var i = 0;
+    document.querySelectorAll('#dd p').forEach((d) => {
+      if (i === 0) {
+        d.textContent = 'Date: ' + moment(Date.now()).format('Do-MM-YYYY');
+        i = 1;
+      } else {
+        d.textContent = 'Time: ' + moment(Date.now()).format('hh.mm.ss a');
+        i = 0;
+      }
+    });
+  }
+  setInterval(showTime, 1);
+
+    const socket=io();
+    const $messageForm=document.querySelector("#message-form");
+    const $messageFormInput = $messageForm.querySelector('#ip');
+    const $messageFormButton = $messageForm.querySelector('#but');
+    const $messages=document.querySelector('#messages');
+    const x= Qs.parse(location.search,{ignoreQueryPrefix:true});
+    const useremail=x.user;
+    const room=x.room;
+    console.log(useremail);
+    console.log(room);
+    const messageTemplate=document.querySelector('#message-template').innerHTML;
+
+    socket.emit('join',{useremail,room},(error)=>{
+        if(error){
+            alert(error);
+            location.href="/student/dashboard";
+        }
+    });
+
+    socket.on('message',(msg)=>{
+        const html = Mustache.render(messageTemplate,{
+            message:msg.message,
+            username:msg.username,
+            roomId : msg.roomId,
+            createdAt:moment(msg.createdAt).format('h:mm a')
+        });
+        $messages.insertAdjacentHTML('beforeend',html);
+    });
+
+    $messageForm.addEventListener('submit',(e)=>{
+       e.preventDefault();
+       const message = e.target.elements.message.value;
+       const roomId = e.target.elements.roomId.value;
+       const username = e.target.elements.username.value;
+
+       socket.emit('sendMessage',{
+           message,
+           roomId,
+           username
+       },(error)=>{
+            $messageFormButton.removeAttribute('disabled');
+            $messageFormInput.value="";
+            $messageFormInput.focus();
+            if(error){
+                return console.log(error);
+            }
+            console.log("Message delivered");
+        });
+});
+  
+</script>
+
+<script>
+    const email = document.getElementById("email");
+    const rm = document.getElementById("room");
+    if (window.performance) {
+        
+        }
+        if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+        console.log("ch");
+        location.href="https://lit-depths-17371.herokuapp.com/student/dashboard/discussion/enter?room="+rm.textContent+"&user="+email.textContent+"&v=1"
+        } else {
+        }
+</script>
+
+
+
+<%- include('partials/footer'); -%>

@@ -1,0 +1,178 @@
+<%- include('partials/side-nav'); -%>
+  
+
+<div class="side-nav-content p-3" >
+  <div id='dd' class="scheduled mb-3" style="justify-content: space-between;"><p></p><div class="theme-heading top-welcome" style="padding-top: 0%;">Welcome</div><p></p></div>
+  
+  <%errors.forEach((err)=>{%>
+    <p><%=err%></p>
+  <%})%>
+
+<div class="content">
+
+<section class="discussion">
+<div class="card-container" id="aT" >
+  <div class="each-card text-center" >
+    <div class="col s12 m6">
+      <div class="card" style="background-color: white !important;">
+        <div class="card-content white-text">
+          <h2>Schedule a Discussion</h2>
+          <div class="frm-icn"  style="background-color: #3c35a3 !important;"><div style="width: 60%;">  <%- include('../assets/svg/school.svg') %>
+          </div> </div>
+          <form action="/teacher/discussion/add" method="POST">
+            <div class="form-group black-text">
+              <div class="input-field col s6">
+                <input
+                    type="text"
+                    name="discussion[admin]"
+                    value="<%=currentUser.name%>"
+                    class="black-text"
+                    style="border-color: #f2f2f2;background: #f2f2f2;border-radius: 2px;margin-top: 10px;padding: 4px 10px;"
+                    readonly
+                />
+                
+                <label
+                  for="last_name"
+                  class="black-text"
+                  style="pointer-events: none;margin-top: 0px;"
+                  ><b>Name:</b></label
+                >
+              </div>
+              <div class="input-field col s6">
+                <input
+                  type="text"
+                  name="discussion[email]"
+                  value="<%=currentUser.email%>"
+                  class="black-text"
+                  style="border-color: #f2f2f2;background: #f2f2f2;border-radius: 2px;margin-top: 10px;padding: 4px 10px;"
+                  readonly
+                />
+                <label
+                  for="last_name"
+                  class="black-text"
+                  style="pointer-events: none;"
+                  ><b>Email:</b></label
+                >
+              </div>
+              <div class="input-field col s6">
+                <input
+                type="text"
+                name="discussion[roomId]"
+                placeholder="Create you personalised Room for discussion" 
+                class="validator black-text"
+                style="border-color: #3c35a3;"
+                required
+                />
+              <label class="black-text" style="pointer-events: none;"><b>RoomId:</b></label><br />
+              </div>
+              <label for="meeting" class="black-text" style="font-size: 1.4rem;"><b>Date and Time:</b></label>
+
+              <div class="input-field col s6">
+                <input type="datetime-local" id="birthdaytime" class="validator black-text" style="border-color: #3c35a3;" name="discussion[scheduledTime]" required>
+                </div>
+              <button
+              type="submit"
+                class="btn"
+                style="background: #3c35a3;"
+              >
+                Submit!
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="dashboard">
+  <div style="width: fit-content;margin: auto;">
+    <!-- <%- include('../assets/svg/teacher.svg') -%> -->
+    <img src="/images/AfricanProfes.png" style="margin:auto"/>
+  </div>
+<div class="scheduled">
+  <div class="sche-dash m-3">
+    <h2 class="text-center" style="color: #3C35A3;">Scheduled Discussions</h2>
+    <table class="table table-striped;border-radius: 1em;border-radius: 25px !important" >
+      <thead>
+        <tr style="background:#6D7AE0;color:white;border-radius: 25px">
+          <th scope="col">Scheduled time </th>
+          <th scope="col">Room id </th>
+          <th scope="col">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% t=0 %>
+        <%discussions.forEach(function(discussion){%>
+          <% t++ %>
+          <% if(t%2==0) { %>
+            <tr style="background:white">
+          <%} else { %>
+            <tr style="background:#F8F7FF">
+          <% } %>
+          <td scope="row"><%=moment(discussion.scheduledTime).format('MMMM Do YYYY, h:mm:ss a')%>  </td>
+          <td> <%=discussion.roomId%></td>
+          <td> <a class="waves-effect  btn text-center " style="background: #3C35A3;" href="/teacher/dashboard/enter/discussion?room=<%=discussion.roomId%>&user=<%=currentUser.email%>"><i class="fas fa-pencil-alt fa-sm"></i></a></td>
+        </tr>
+        <%})%>
+      </tbody>
+    </table>
+    
+  </div>
+  
+</div>
+</section>
+
+</div>
+</div>
+<script>
+  var teacherNav = document.querySelectorAll('#teacher-nav');
+  teacherNav.forEach((teacherNav) => {
+  teacherNav.innerHTML = '';
+  const navLinks = `<a id="dshbrd" href="#" onclick="dashboard()"
+        ><i class="fas fa-desktop"></i><span>Dashboard</span></a
+      >
+      <a href="#" onclick="discussion()"
+        ><i class="fas fa-th"></i><span>New Discussion</span></a
+      >
+      `;
+    teacherNav.innerHTML = navLinks;});
+  document.querySelectorAll('.hme').forEach(link => link.href = location.hostname);
+    function showTime(){
+      var i = 0;
+    document.querySelectorAll("#dd p").forEach(d => {
+      if( i === 0){
+        d.textContent="Date: "+moment(Date.now()).format('Do-MM-YYYY');
+        i = 1
+      }
+      else {d.textContent="Time: "+ moment(Date.now()).format('hh.mm.ss a');i=0;}
+    });
+    }
+    setInterval(showTime,1);
+</script>
+<script>
+  function dateFunction(e){
+    var date = e.target.value;
+    console.log(date)
+}
+function submitForm(e){
+    var date = e.target;
+    console.log(date);
+}
+function timeFunction(e){
+    var time = e.target.value;
+    console.log(time)
+}
+</script>
+
+<script>
+    if (window.performance) {
+    }
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+      location.href = 'https://lit-depths-17371.herokuapp.com/teacher/dashboard?f=1';
+    } else {
+    }
+</script>
+<%- include('partials/footer'); -%>
