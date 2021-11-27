@@ -7,7 +7,7 @@ Presentation :
 <br/>
 Video Demo :
 <br/>
-Super Admin Credentials:
+Super Admin Credentials
 <br/>
 Username :
 <br/>
