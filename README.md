@@ -6,3 +6,10 @@ Live app Link : https://lit-depths-17371.herokuapp.com/
 Presentation : 
 <br/>
 Video Demo :
+<br/>
+Super Admin Credentials:
+<br/>
+Username :
+<br/>
+Password: 
+
