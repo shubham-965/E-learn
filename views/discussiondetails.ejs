@@ -202,7 +202,7 @@
                 <div id="messages"> 
                 <%texts.forEach((per)=>{%>
                     <div>
-                        <span><%=per.username%></span> <span style="font-size: 12px;font-weight: 200;"><%=moment(per.createdAt).format('h:mm a')%></span>
+                        <span><%=per.username%></span> <span style="font-size: 10px;font-weight: 200;"><%=moment(per.createdAt).format('h:mm a')%></span>
                         <p style="background: #EDEEF7;padding: 10px 10px;min-width: 70px;max-width: 500px;border-radius: 20px;"><%=per.message%></p>
                     </div>
                   <%})%>
